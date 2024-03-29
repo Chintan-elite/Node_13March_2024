@@ -44,4 +44,44 @@ yargs.command({
     }
 })
 
+yargs.command({
+    command:"delete",
+    builder:{
+        name:{
+            type:String
+        }
+    },
+    handler : function(argv)
+    {
+        files.deleteData(argv.name)
+    }
+})
+
+
+yargs.command({
+    command:"update",
+    builder : {
+        name:{
+            type:String
+        },
+        email:{
+            type : String
+        },
+        phone:{
+            type:Number
+        }
+    },
+    handler : function(argv)
+    {
+       data = {
+        name : argv.name,
+        email : argv.email,
+        phone : argv.phone
+       }
+        files.updateData(data)
+    }
+})
+
+
+
 yargs.argv
