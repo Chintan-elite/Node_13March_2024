@@ -1,15 +1,33 @@
-const axios = require("axios")
+const geocode = require("./geocode")
+const weather = require("./weather")
 
 
-axios.get("https://restcountries.com/v3.1/all").then(result=>{
+const city = process.argv[2]
+if(!city)
+{
+    console.log("City name required");
+    return
+}
 
-    const dt = result.data
+geocode.geocodedata(city,(data,err)=>{
 
-    for(var i=0;i<dt.length;i++)
-    {
-        console.log(dt[i].name.common);
-    }
+    if(err)
+        console.log(err);
+       
+    
+    weather.weatherdata(data.lat,data.lng,(result,err)=>{
 
-}).catch(err=>{
-    console.log(err);
+        console.log(`
+        
+        City = ${result.city}
+        Lat = ${data.lat}
+        Lng = ${data.lng}
+        Temp = ${result.temp}
+        Pressure = ${result.pressure}
+        Humidity = ${result.humidity}
+        
+        `);
+    })
+
+
 })
