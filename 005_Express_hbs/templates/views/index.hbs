@@ -1,13 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+ 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width,
+                                   initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- Include Bootstrap CSS -->
+    <link href=
+"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <!-- Include Bootstrap Icons -->
+    <link href=
+"https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+          rel="stylesheet">
+      
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+ 
+        .weather-card {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            position: relative;
+            /* To position the sun icon */
+        }
+ 
+        .weather-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+ 
+        .input-group-text {
+            background-color: #fff;
+            border: none;
+        }
+ 
+        .weather-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+ 
+        .weather-info {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+ 
+        .weather-btn {
+            background-color: #007bff;
+            border: none;
+        }
+ 
+        .weather-btn:hover {
+            background-color: #0056b3;
+        }
+ 
+        .sunny-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ffce00;
+            font-size: 48px;
+        }
+    </style>
+   
 </head>
+ 
 <body>
-
-      {{>header}}
-    <h1>INDEX</h1>
+    {{>header}}
+    <div class="weather-card">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <div class="sunny-icon">
+                    <i class="bi bi-sun-fill"></i>
+                </div>
+            </div>
+        </div>
+        <h1 class="weather-title text-center mb-4">
+          Weather App</h1>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control"
+                   placeholder="Enter Your City Name"
+                   aria-label="City Name"
+                aria-describedby="basic-addon2" id="city">
+            <button class="btn btn-primary weather-btn"
+                    type="button" id="button-addon2" onclick="weatherdata()">Get Weather</button>
+        </div>
+        <div id="weatherInfo">
+            <div class="weather-icon text-center">
+                <i class="bi bi-cloud-sun"></i>
+            </div>
+            <div class="weather-info text-center">
+                <p>City : <span id="mycity"></span></p>
+                <p>Lat : <span id="mylat"></span></p>
+                <p>Lng : <span id="mylng"></span></p>
+                <p>Temperature: <span id="mytemp"></span></p>
+                <p>Humidity: <span id="myhumidity"></span></p>
+                <p>Pressure : <span id="mypressure"></span></p>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Include Bootstrap JS -->
+    <script src=
+"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+ <script src="js/data.js"></script>
 </body>
+ 
 </html>
