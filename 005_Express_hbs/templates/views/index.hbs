@@ -74,7 +74,7 @@
    
 </head>
  
-<body>
+<body onload="getAllCountries()">
     {{>header}}
     <div class="weather-card">
         <div class="row justify-content-end">
@@ -86,14 +86,35 @@
         </div>
         <h1 class="weather-title text-center mb-4">
           Weather App</h1>
+
         <div class="input-group mb-3">
-            <input type="text" class="form-control"
-                   placeholder="Enter Your City Name"
-                   aria-label="City Name"
-                aria-describedby="basic-addon2" id="city">
-            <button class="btn btn-primary weather-btn"
-                    type="button" id="button-addon2" onclick="weatherdata()">Get Weather</button>
+            
+           <select name="country" id="country" class="form-control" onchange="getallState(value)">
+            <option value="">---Select country---</option>
+
+
+           </select>
         </div>
+
+            <div class="input-group mb-3">
+            
+           <select name="state" id="state" class="form-control" onchange="getallcity(value)">
+            <option value="">---Select state---</option>
+
+
+           </select>
+        </div>
+
+         <div class="input-group mb-3">
+            
+           <select name="city" id="city" class="form-control" onchange="weatherdata(value)">
+            <option value="">---Select city---</option>
+
+
+           </select>
+        </div>
+
+       
         <div id="weatherInfo">
             <div class="weather-icon text-center">
                 <i class="bi bi-cloud-sun"></i>
