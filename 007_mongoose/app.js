@@ -1,13 +1,14 @@
 const mongoose = require("mongoose")
 
 
-const url = "mongodb://localhost:27017/student";
+// const url = "mongodb://localhost:27017/student";
 
+const url = "mongodb+srv://chintantops:test@cluster0.wfbjoxa.mongodb.net/mydb?retryWrites=true&w=majority&appName=Cluster0"
 mongoose.connect(url).then(data=>{
 
     console.log("db connected");
 }).catch(err=>{
- console.log(err);
+    console.log(err);
 })
 
 const personalSchema = new mongoose.Schema({
@@ -67,7 +68,31 @@ const viewData = ()=>{
 
 }
 
+const updateData = ()=>{
+
+         const d3 = {name:"abc-update",email:"abc11@yahoo.com",age:25}
+
+         Personal.findByIdAndUpdate('66238448ec8c869b1a7f7248',d3).then(data=>{
+            console.log(data);
+         }).catch(err=>{
+            console.log(err);
+         })
+
+}
+
+
+const deleteData = ()=>{
+
+    Personal.findByIdAndDelete('66238448ec8c869b1a7f7248').then(data=>{
+        console.log(data);
+    }).catch(err=>{
+        console.log(err);
+    })
+
+}
 
 // addData()
 // addManydata()
-viewData()
+// viewData()
+// updateData()
+// deleteData()
