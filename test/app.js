@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs")
-
+const jwt = require("jsonwebtoken")
 const setPass = async (pass)=>{
 
   const n_pass =   await bcrypt.hash(pass,10)
@@ -9,5 +9,12 @@ const setPass = async (pass)=>{
 }
 
 
+const getToken = async ()=>{
 
-setPass("hello")
+    const token =  await jwt.sign({_id:1},"thisismysecretkeyfortoken")
+    console.log(token);
+}
+
+
+getToken()
+// setPass("hello")

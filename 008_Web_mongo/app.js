@@ -2,12 +2,12 @@ const express = require("express")
 const app = express()
 require("dotenv").config()
 const mongoose = require("mongoose")
-
+const cookieParser = require("cookie-parser")
 const hbs = require("hbs")
 const path = require("path")
 var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
-
+app.use(cookieParser())
 const PORT = process.env.PORT
 const URL = process.env.URL
 

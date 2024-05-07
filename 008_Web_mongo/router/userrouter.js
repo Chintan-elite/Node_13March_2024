@@ -2,6 +2,8 @@ const express = require("express")
 const router = express.Router()
 const User = require("../model/users")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+const auth = require("../middleware/auth")
 router.get("/",(req,resp)=>{
     resp.render('index')
 })
@@ -27,7 +29,7 @@ router.post('/reg',(req,resp)=>{
 })
 
 
-router.get("/display",async(req,resp)=>{
+router.get("/display",auth,async(req,resp)=>{
 
     const data = await User.find();
     resp.render("display",{"data":data})
@@ -70,6 +72,9 @@ router.post("/userlogin",async (req,resp)=>{
         const isValid =  await bcrypt.compare(password,data.password)
         if(isValid)
         {
+            
+            const token = await jwt.sign({_id:data._id},process.env.SKEY)
+            resp.cookie("jwt",token)
             resp.redirect("display")
         }
         else{
@@ -78,11 +83,16 @@ router.post("/userlogin",async (req,resp)=>{
 
 
     } catch (error) {
+        console.log(err);
         resp.render("login",{"msg":"Invalid credentials"})
     }
 
 })
 
+router.get("/logout",auth,async(req,resp)=>{
 
+        resp.clearCookie("jwt")
+        resp.render("login")
+})
 
 module.exports=router
