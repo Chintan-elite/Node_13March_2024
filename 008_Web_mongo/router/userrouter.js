@@ -69,11 +69,19 @@ router.post("/userlogin",async (req,resp)=>{
     try {
         
         const data = await User.findOne({email:email})
+
+        if(data.Tokens.length>=2)
+        {
+            resp.render("login",{"msg":"Max user limit reached !!!"})
+            return;
+        }
+
+
         const isValid =  await bcrypt.compare(password,data.password)
         if(isValid)
         {
             
-            const token = await jwt.sign({_id:data._id},process.env.SKEY)
+            const token = await data.generateToken()
             resp.cookie("jwt",token)
             resp.redirect("display")
         }
@@ -83,7 +91,7 @@ router.post("/userlogin",async (req,resp)=>{
 
 
     } catch (error) {
-        console.log(err);
+        console.log(error);
         resp.render("login",{"msg":"Invalid credentials"})
     }
 
@@ -91,8 +99,40 @@ router.post("/userlogin",async (req,resp)=>{
 
 router.get("/logout",auth,async(req,resp)=>{
 
+
+        var user  = req.user
+        var token = req.token
+
+        // console.log(user);
+        // console.log(token);
+
+       user.Tokens =   user.Tokens.filter(ele=>{
+            return ele.token !=token
+        })
+
+        await user.save()
+
+
         resp.clearCookie("jwt")
         resp.render("login")
+})
+
+router.get("/logoutall",auth,async(req,resp)=>{
+
+
+    var user  = req.user
+    var token = req.token
+
+    // console.log(user);
+    // console.log(token);
+
+   
+    await user.save()
+
+    user.Tokens = [];
+    user.save()
+    resp.clearCookie("jwt")
+    resp.render("login")
 })
 
 module.exports=router
