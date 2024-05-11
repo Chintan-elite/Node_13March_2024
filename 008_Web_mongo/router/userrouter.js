@@ -4,6 +4,24 @@ const User = require("../model/users")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const auth = require("../middleware/auth")
+const multer = require("multer")
+const fs = require("fs")
+
+var storage = multer.diskStorage({
+    destination: function(req,file,cb){
+        cb(null,'./public/images')
+    },
+    filename:function(reg,file,cb)
+    {
+        cb(null, Date.now()+"_"+file.originalname)
+    }
+    
+})
+
+var upload = multer({storage:storage})
+
+
+
 router.get("/",(req,resp)=>{
     resp.render('index')
 })
@@ -13,9 +31,16 @@ router.get("/login",(req,resp)=>{
 
 })
 
-router.post('/reg',(req,resp)=>{
+router.post('/reg',upload.single("img"),(req,resp)=>{
 
-        const user = new User(req.body)
+
+        const user = new User({
+            name:req.body.name,
+            email:req.body.email,
+            phone:req.body.phone,
+            password:req.body.password,
+            img:req.file.filename
+        })
       
         user.save().then(data=>{
             
@@ -37,8 +62,9 @@ router.get("/display",auth,async(req,resp)=>{
 
 router.get("/delete",async(req,resp)=>{
 
-       const _id = req.query.did
-        await User.findByIdAndDelete(_id)
+        const _id = req.query.did
+        const data =  await User.findByIdAndDelete(_id)
+        fs.unlinkSync("public/images/"+data.img)
         resp.redirect("display")
 })
 

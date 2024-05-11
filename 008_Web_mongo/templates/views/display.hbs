@@ -21,6 +21,7 @@
                     <th>Username</th>
                     <th>Email</th>
                     <th>Phone</th>
+                    <th>image</th>
                     <th><a href="logout">Logout</a></th>
                     <th><a href="logoutall">LogoutAll</a></th>
                 </tr>
@@ -30,6 +31,7 @@
                         <td>{{this.name}}</td>
                         <td>{{this.email}}</td>
                         <td>{{this.phone}}</td>
+                        <td><img src="images/{{this.img}}" alt="{{this.img}}" width="50px" height="50px"></td>
                         <td><a href="delete?did={{this.id}}" class="btn btn-danger">Delete</a></td>
                          <td><a href="edit?eid={{this.id}}" class="btn btn-warning">Edit</a></td>
                     </tr>

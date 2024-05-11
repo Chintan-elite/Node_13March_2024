@@ -21,6 +21,8 @@ mongoose.connect(URL).then(data=>{
 
 
 
+
+
 const viewpath = path.join(__dirname,'./templates/views')
 const partialpath = path.join(__dirname,'./templates/partials')
 const publicpath = path.join(__dirname,'./public')
