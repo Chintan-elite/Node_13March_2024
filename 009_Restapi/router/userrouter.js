@@ -1,9 +1,12 @@
 const express = require("express")
 const router = express.Router()
 const User = require("../model/users")
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+const auth = require("../middleware/auth")
 
 
-router.get("/",async(req,resp)=>{
+router.get("/",auth,async(req,resp)=>{
     try {
         const users = await User.find()
         resp.send(users)
@@ -12,7 +15,7 @@ router.get("/",async(req,resp)=>{
     }
 })
 
-router.get("/:id",async(req,resp)=>{
+router.get("/:id",auth,async(req,resp)=>{
     const _id = req.params.id
     try {
         const users = await User.findOne({_id:_id})
@@ -36,7 +39,7 @@ router.post("/",async(req,resp)=>{
 
 })
 
-router.put("/:id",async(req,resp)=>{
+router.put("/:id",auth,async(req,resp)=>{
    
         const _id = req.params.id
         try {
@@ -50,7 +53,7 @@ router.put("/:id",async(req,resp)=>{
 
 })
 
-router.delete("/:id",async(req,resp)=>{
+router.delete("/:id",auth,async(req,resp)=>{
     const _id = req.params.id
     try {
        
@@ -62,6 +65,33 @@ router.delete("/:id",async(req,resp)=>{
     }
 })
 
+
+router.post("/login",async(req,resp)=>{
+
+    const email = req.body.email
+    const pass = req.body.pass
+    try {
+        
+            const data = await User.findOne({email:email})
+
+            var isValid =  await bcrypt.compare(pass,data.pass)
+            if(isValid)
+                {
+
+                    const token = await jwt.sign({_id:data._id},process.env.S_KEY)
+                    resp.send("Welcome : "+data.name+" "+"auth-token : "+token)
+                }
+                else{
+                    resp.send("Invalid credentials !!!")
+                }
+
+    } catch (error) {
+        
+        resp.send("Invalid credentials !!!")
+    }
+
+
+})
 
 
 module.exports = router

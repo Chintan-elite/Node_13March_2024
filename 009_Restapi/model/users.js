@@ -1,5 +1,5 @@
 const mongoose =  require("mongoose")
-
+const bcrypt = require("bcryptjs")
 
 const usershcema = new mongoose.Schema({
     name  :{
@@ -17,5 +17,15 @@ const usershcema = new mongoose.Schema({
         type : Number
     }
 })
+
+usershcema.pre("save",async function(){
+
+        if(this.isModified("pass"))
+        {
+            this.pass = await bcrypt.hash(this.pass,10)
+        }
+
+})
+
 
 module.exports = new mongoose.model("User",usershcema)
