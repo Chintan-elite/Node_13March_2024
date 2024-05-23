@@ -4,7 +4,18 @@ require("dotenv").config()
 const PORT = process.env.PORT
 const path = require("path")
 const hbs = require("hbs")
+const DBURL = process.env.URL
+const mongoose = require("mongoose")
+const bodyParser = require("body-parser")
 
+mongoose.connect(DBURL).then(()=>{
+    console.log("DB connected...");
+}).catch(err=>{
+    console.log(err);
+})
+
+
+app.use(bodyParser())
 const viewPath = path.join(__dirname,"../Templates/views")
 const partialPath = path.join(__dirname,"../Templates/partials")
 const publicPath = path.join(__dirname,'../public')

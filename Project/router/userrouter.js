@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-
+const User = require("../model/users")
 
 
 router.get("/",(req,resp)=>{
@@ -33,6 +33,17 @@ router.get("/reg",(req,resp)=>{
     resp.render("reg")
 })
 
+
+router.post("/userreg",async(req,resp)=>{
+    try {
+       const user = new User(req.body)
+       const dt = await user.save()
+
+       resp.render("reg",{"msg":"registration successfully !!!"})
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 
 
