@@ -1,9 +1,14 @@
 const express = require("express")
 const router = express.Router()
 const User = require("../model/users")
-
+const auth = require("../middleware/auth")
+const bcrypt = require("bcryptjs")
 
 router.get("/",(req,resp)=>{
+    resp.redirect("index")
+})
+
+router.get("/index",(req,resp)=>{
     resp.render("index")
 })
 
@@ -20,7 +25,7 @@ router.get("/shop",(req,resp)=>{
     resp.render("shop")
 })
 
-router.get("/cart",(req,resp)=>{
+router.get("/cart",auth,(req,resp)=>{
     resp.render("cart")
 })
 
@@ -44,6 +49,40 @@ router.post("/userreg",async(req,resp)=>{
         console.log(error);
     }
 })
+
+
+router.post("/userlogin",async (req,resp)=>{
+
+    const email = req.body.email
+    const password = req.body.pass
+
+    try {
+        
+        const data = await User.findOne({email:email})
+
+       
+
+
+        const isValid =  await bcrypt.compare(password,data.pass)
+        if(isValid)
+        {
+            
+            const token = await data.generateToken()
+            resp.cookie("jwt",token)
+            resp.redirect("index")
+        }
+        else{
+            resp.render("login",{"msg":"Invalid credentials"})
+        }
+
+
+    } catch (error) {
+        console.log(error);
+        resp.render("login",{"msg":"Invalid credentials"})
+    }
+
+})
+
 
 
 

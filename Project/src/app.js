@@ -7,7 +7,9 @@ const hbs = require("hbs")
 const DBURL = process.env.URL
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
+const cookieparer = require("cookie-parser")
 
+app.use(cookieparer())
 mongoose.connect(DBURL).then(()=>{
     console.log("DB connected...");
 }).catch(err=>{
