@@ -83,7 +83,23 @@ router.post("/userlogin",async (req,resp)=>{
 
 })
 
+router.get("/logout",auth,async(req,resp)=>{
+    var user  = req.user
+    var token = req.token
 
+    // console.log(user);
+    // console.log(token);
+
+   user.Tokens =   user.Tokens.filter(ele=>{
+        return ele.token !=token
+    })
+
+    await user.save()
+
+
+    resp.clearCookie("jwt")
+    resp.render("login")
+})
 
 
 module.exports=router

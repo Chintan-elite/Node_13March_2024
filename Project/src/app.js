@@ -30,6 +30,7 @@ app.use(express.static(publicPath))
 
 
 app.use("/",require("../router/userrouter"))
+app.use("/",require("../router/adminrouter"))
 
 app.listen(PORT,()=>{
     console.log(`server running on port : ${PORT}`);
