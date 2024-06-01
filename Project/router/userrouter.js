@@ -3,13 +3,22 @@ const router = express.Router()
 const User = require("../model/users")
 const auth = require("../middleware/auth")
 const bcrypt = require("bcryptjs")
+const Category = require("../model/categories")
 
 router.get("/",(req,resp)=>{
     resp.redirect("index")
 })
 
-router.get("/index",(req,resp)=>{
-    resp.render("index")
+router.get("/index",async(req,resp)=>{
+
+    try {
+        
+        const allCategories = await Category.find();
+        resp.render("index",{"categories":allCategories})
+    } catch (error) {
+        
+    }
+    
 })
 
 
